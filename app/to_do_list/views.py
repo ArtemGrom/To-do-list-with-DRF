@@ -23,7 +23,7 @@ def home(request):
 class NoteView(APIView):
     def get(self, request):
         """ Получить список всех записей """
-        notes = Note.objects.all().order_by('-date_add', 'important')
+        notes = Note.objects.filter(public=True).order_by('-date_add', 'important')
         notes_serializer = NoteSerializer(notes, many=True)
         return Response(notes_serializer.data)
 
@@ -38,6 +38,17 @@ class NoteDetailView(APIView):
 
         serializer = NoteDetailSerializer(note)
         return Response(serializer.data)
+
+    def delete(self, request, note_id):
+        """Метод для удаления статьи"""
+        note = Note.objects.filter(pk=note_id).first()
+
+        if not note:
+            raise NotFound(f'Cтатья с id={note_id} не найдена')
+
+        note.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class NoteEditorView(APIView):
@@ -69,6 +80,3 @@ class NoteEditorView(APIView):
             return Response(new_note.data, status=status.HTTP_200_OK)
         else:
             return Response(new_note.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-

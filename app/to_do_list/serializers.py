@@ -14,17 +14,22 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class NoteSerializer(serializers.ModelSerializer):
     """Сериализует все статьи блога"""
+    # Меняем вывод, вместо `ID` пользователя будет `Имя`
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+
     class Meta:
-        """
-        {
-            "title": "Статья 1",
-            "message": "Моя первая статья",
-            "public": true
-        }
-        """
         model = Note
-        fields = ['id', 'title', 'message', 'public', 'date_add']
-        read_only_fields = ['date_add']
+        fields = "__all__"
+        read_only_fields = ['date_add', 'author']
+
+    def to_representation(self, instance):
+        """ Переопределение вывода. Меняем формат даты в ответе """
+        ret = super().to_representation(instance)
+        # Конвертируем строку в дату по формату
+        date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S.%f')
+        # Конвертируем дату в строку в новом формате
+        ret['date_add'] = date_add.strftime('%d %B %Y %H:%M:%S')
+        return ret
 
 
 class NoteDetailSerializer(serializers.ModelSerializer):
@@ -33,7 +38,7 @@ class NoteDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = "__all__"
+        exclude = ('public',)
 
     def to_representation(self, instance):
         """ Переопределение вывода. Меняем формат даты в ответе """

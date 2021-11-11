@@ -23,7 +23,7 @@ class NoteAdmin(admin.ModelAdmin):
     search_fields = ["title", "message"]
 
     # фильтры справа
-    list_filter = ("public", "important", )
+    list_filter = ("public", "important",)
 
     def save_model(self, request, obj, form, change):
         # Добавляем текущего пользователя (если не выбран) при сохранении модели
