@@ -1,9 +1,7 @@
 from django.contrib import admin
-from django.conf.locale.ru import formats as ru_formats
 from rest_framework.authtoken.admin import TokenAdmin
 from .models import Note
 
-ru_formats.DATETIME_FORMAT = "d.m.Y H:i:s"
 
 TokenAdmin.raw_id_fields = ['user']
 

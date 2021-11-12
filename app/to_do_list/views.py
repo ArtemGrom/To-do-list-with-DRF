@@ -15,6 +15,8 @@ def home(request):
     context = {
         "title": "Добро пожаловать!",
         "message": "Это простое приложение для ведения заметок",
+        "message1": "Для регистрации нужно зайти на http://127.0.0.1:8000/api-auth/login/",
+        "message2": "Далее для просмотра заметок http://127.0.0.1:8000/api/v1/notes/"
     }
 
     return render(request, 'to_do_list/index.html', context)
@@ -48,7 +50,6 @@ class NoteDetailView(APIView):
 
         note.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class NoteEditorView(APIView):
