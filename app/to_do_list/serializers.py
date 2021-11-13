@@ -9,7 +9,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     """ Автор статьи """
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'date_joined')
+        fields = ('id', 'username', 'date_joined')
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -22,14 +22,14 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ['date_add', 'author']
 
-    def to_representation(self, instance):
-        """ Переопределение вывода. Меняем формат даты в ответе """
-        ret = super().to_representation(instance)
-        # Конвертируем строку в дату по формату
-        date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S.%f')
-        # Конвертируем дату в строку в новом формате
-        ret['date_add'] = date_add.strftime('%d %B %Y %H:%M:%S')
-        return ret
+    # def to_representation(self, instance):
+    #     """ Переопределение вывода. Меняем формат даты в ответе """
+    #     ret = super().to_representation(instance)
+    #     # Конвертируем строку в дату по формату
+    #     date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S.%f')
+    #     # Конвертируем дату в строку в новом формате
+    #     ret['date_add'] = date_add.strftime('%d %B %Y %H:%M:%S')
+    #     return ret
 
 
 class NoteDetailSerializer(serializers.ModelSerializer):
@@ -40,15 +40,15 @@ class NoteDetailSerializer(serializers.ModelSerializer):
         model = Note
         exclude = ('public',)
 
-    def to_representation(self, instance):
-        """ Переопределение вывода. Меняем формат даты в ответе """
-        ret = super().to_representation(instance)
-        # Конвертируем строку в дату по формату
-        date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S.%f')  # Для даты с миллисекундами
-        # date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S')
-        # Конвертируем дату в строку в новом формате
-        ret['date_add'] = date_add.strftime('%d %B %Y %H:%M:%S')
-        return ret
+    # def to_representation(self, instance):
+    #     """ Переопределение вывода. Меняем формат даты в ответе """
+    #     ret = super().to_representation(instance)
+    #     # Конвертируем строку в дату по формату
+    #     date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S.%f')  # Для даты с миллисекундами
+    #     # date_add = datetime.strptime(ret['date_add'], '%Y-%m-%dT%H:%M:%S')
+    #     # Конвертируем дату в строку в новом формате
+    #     ret['date_add'] = date_add.strftime('%d %B %Y %H:%M:%S')
+    #     return ret
 
 
 class NoteEditorSerializer(serializers.ModelSerializer):

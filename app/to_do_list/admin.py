@@ -9,13 +9,13 @@ TokenAdmin.raw_id_fields = ['user']
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
     # Поля в списке
-    list_display = ("title", "message", "date_add", "public", "important", "author")
+    list_display = ("title", "message", "date_add", "public", "important", "author", "status")
 
     # группировка поля в режиме редактирования
-    fields = ("date_add", ("title", "public", "important"), "message", "author")
+    fields = ("date_add", ("title", "public", "important"), "message", "author", "status")
 
     # поля для чтения в режиме редактирования
-    readonly_fields = ("date_add",)
+    # readonly_fields = ("date_add",)
 
     # поиск по выбранным полям
     search_fields = ["title", "message"]
